@@ -4,6 +4,8 @@ Project is testing to autit-logs in EF core
 # EF migration commands
 Add-Migration "InitialCreated" -Project JobApp.Infrastructure -StartupProject JobApp.Api -Context JobAppDbContext -OutputDir Persistences\Migrations
 
+> Como este repo é apenas de teste e aprendizado o .env esta adicionado e os valores de appsettings não foram omitidos, 
+> mas em um projeto real esses dados devem ser confidenciais e não podem ser expostos.
 
 ## AuditLog Implementation
 
