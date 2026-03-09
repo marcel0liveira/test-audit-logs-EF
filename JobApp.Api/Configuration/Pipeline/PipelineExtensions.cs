@@ -1,4 +1,6 @@
-﻿using Scalar.AspNetCore;
+﻿using JobApp.Infrastructure.Persistences;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 namespace JobApp.Api.Configuration.Pipeline
 {
@@ -6,6 +8,13 @@ namespace JobApp.Api.Configuration.Pipeline
     {
         public static void UseApi(this WebApplication app)
         {
+            // Apply pending migrations
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<JobAppDbContext>();
+                db.Database.Migrate();
+            }
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

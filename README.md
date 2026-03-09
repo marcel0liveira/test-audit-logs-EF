@@ -8,6 +8,16 @@ Project is testing to autit-logs in EF core
 > Como este repo é apenas de teste e aprendizado o .env esta adicionado e os valores de appsettings não foram omitidos, 
 > mas em um projeto real esses dados devem ser confidenciais e não podem ser expostos.
 
+# Executar o projeto:
+ - na raiz da soluçãp, execute o comando:
+ ```bash
+   docker compose up -d
+ ```
+
+
+ 
+
+
 ## AuditLog Implementation
 - O plano para AuditLog seria usar uma interface que seria implantada junto com a BaseEntity nas models desejados.
 
