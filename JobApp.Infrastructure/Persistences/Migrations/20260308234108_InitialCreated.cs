@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace JobApp.Infrastructure.Persistence.Migrations
+namespace JobApp.Infrastructure.Persistences.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreated : Migration
@@ -11,6 +12,25 @@ namespace JobApp.Infrastructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "audit_trails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    EntityName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    PrimaryKey = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    TrailType = table.Column<string>(type: "text", nullable: false),
+                    DateUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    OldValues = table.Column<Dictionary<string, object>>(type: "jsonb", nullable: false),
+                    NewValues = table.Column<Dictionary<string, object>>(type: "jsonb", nullable: false),
+                    ChangedColumns = table.Column<string>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_audit_trails", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -117,6 +137,11 @@ namespace JobApp.Infrastructure.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_audit_trails_EntityName",
+                table: "audit_trails",
+                column: "EntityName");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_UserId",
                 table: "Companies",
                 column: "UserId");
@@ -132,6 +157,9 @@ namespace JobApp.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Applicants");
+
+            migrationBuilder.DropTable(
+                name: "audit_trails");
 
             migrationBuilder.DropTable(
                 name: "JobPosts");

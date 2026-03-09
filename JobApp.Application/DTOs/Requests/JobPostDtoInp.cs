@@ -1,4 +1,4 @@
-﻿namespace JobApp.Application.DTO
+﻿namespace JobApp.Application.DTOs.Requests
 {
     public class JobPostDtoInp
     {

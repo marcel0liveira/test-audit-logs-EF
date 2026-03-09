@@ -1,5 +1,5 @@
 ﻿using JobApp.Domain.FCG.Users.Domain.Abstractions;
-using JobApp.Domain.Interface;
+using JobApp.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobApp.Domain.Models

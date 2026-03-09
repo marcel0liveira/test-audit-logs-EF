@@ -1,0 +1,75 @@
+# Docker compose para microsserviços com PostgreSQL e RabbitMQ
+name: AuditLogging
+services:
+  # ============================================================================  
+  # DATABASE - PostgreSQL User
+  # ============================================================================  
+  jobapp-postgres:
+    image: postgres:16-alpine
+    container_name: jobapp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+      POSTGRES_DB: ${DB_USER_DBNAME:-JobApp}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "${DB_USER_PORT:-5432}:5432"
+    volumes:
+      - postgres_job_app:/var/lib/postgresql/data
+    networks:
+      - jobapp-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s  
+
+  # ============================================================================  
+  # TOOLS - pgAdmin (LOCAL DEV)
+  # ============================================================================  
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: jobapp-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@jobapp.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+      PGADMIN_CONFIG_COOKIE_DEFAULT_SECURE: "False"
+      PGADMIN_CONFIG_COOKIE_SAMESITE: "'Lax'"
+      PGADMIN_CONFIG_SESSION_EXPIRATION_TIME: 1800
+      SCRIPT_NAME: /pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./config/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      - jobapp-postgres
+    networks:
+      - jobapp-network
+
+# ============================================================================  
+# VOLUMES
+# ============================================================================  
+volumes:
+  postgres_job_app:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+# ============================================================================  
+# NETWORKS
+# ============================================================================  
+networks:
+  jobapp-network:
+    driver: bridge
+
+# ============================================================================  
+# SECRETS
+# ============================================================================  
+secrets:
+  jwt_secret:
+    file: ./secrets/jwt_secret

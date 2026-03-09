@@ -1,12 +1,10 @@
-﻿using JobApp.Domain.Interface;
-
-namespace JobApp.Domain
+﻿namespace JobApp.Domain
 {
     namespace FCG.Users.Domain.Abstractions
     {
         public abstract class BaseEntity
         {
-            public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
+            public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
             public DateTimeOffset? UpdatedAt { get; set; } = null;
 
             public Guid Id { get; init; } = Guid.NewGuid();

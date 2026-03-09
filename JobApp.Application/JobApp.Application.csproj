@@ -10,4 +10,8 @@
     <ProjectReference Include="..\JobApp.Domain\JobApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Responses\" />
+  </ItemGroup>
+
 </Project>

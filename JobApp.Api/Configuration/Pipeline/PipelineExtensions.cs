@@ -14,15 +14,21 @@ namespace JobApp.Api.Configuration.Pipeline
 
             app.ConfigureScallar();
             app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
-            app.UseRouting();
-            app.Run();
         }
 
-        private static void ConfigureScallar(this WebApplication app) {
+        private static void ConfigureScallar(this WebApplication app)
+        {
             app.MapScalarApiReference("scalar", options =>
             {
+                options.AddPreferredSecuritySchemes("BearerAuth")
+                        .AddHttpAuthentication("BearerAuth", auth =>
+                        {
+                            auth.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+                        });
+    
                 options.Title = "Testando Scalar no lugar do SwaggerUI";
                 options.Theme = ScalarTheme.Mars; // Exemplo de uso das propriedades que você listou
                 options.ShowSidebar = true;

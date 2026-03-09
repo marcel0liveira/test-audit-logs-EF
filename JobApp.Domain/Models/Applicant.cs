@@ -1,9 +1,10 @@
 ﻿using JobApp.Domain.FCG.Users.Domain.Abstractions;
-using JobApp.Domain.Interface;
+using JobApp.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobApp.Domain.Models
 {
+    // plano auditLog: incluir Interface IAuditableEntity
     public class Applicant : BaseEntity, IAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
