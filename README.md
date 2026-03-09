@@ -1,14 +1,14 @@
 # test-audit-logs-EF
 Project is testing to autit-logs in EF core
 
-# EF migration commands
-Add-Migration "InitialCreated" -Project JobApp.Infrastructure -StartupProject JobApp.Api -Context JobAppDbContext -OutputDir Persistences\Migrations
+# Referencia:
+ - [Post do Projeto original](https://blog.elmah.io/implementing-audit-logs-in-ef-core-without-polluting-your-entities/)
 
+# Info:
 > Como este repo é apenas de teste e aprendizado o .env esta adicionado e os valores de appsettings não foram omitidos, 
 > mas em um projeto real esses dados devem ser confidenciais e não podem ser expostos.
 
 ## AuditLog Implementation
-
 - O plano para AuditLog seria usar uma interface que seria implantada junto com a BaseEntity nas models desejados.
 
   - Interface:
@@ -47,3 +47,9 @@ Add-Migration "InitialCreated" -Project JobApp.Infrastructure -StartupProject Jo
    
  - Provider de Auditoria da sessão do usuário
    - [AuditingProvider](./JobApp.Infrastructure/Provider/ICurrentSessionProvider.cs)
+
+### Helps 
+- EF migration commands
+```bash
+   Add-Migration "InitialCreated" -Project JobApp.Infrastructure -StartupProject JobApp.Api -Context JobAppDbContext -OutputDir Persistences\Migrations
+```
